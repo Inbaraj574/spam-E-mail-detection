@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Detection</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Spam Detection</h1>
+        <p>Enter a message below to check if it’s spam:</p>
+        
+        <textarea id="message" placeholder="Type your message here..."></textarea>
+        
+        <button onclick="predictSpam()">Check Spam</button>
+        
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        async function predictSpam() {
+            const message = document.getElementById('message').value;
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
+            });
+            const result = await response.json();
+            document.getElementById('result').innerText = `Prediction: ${result.prediction}`;
+        }
+    </script>
+</body>
+</html>
